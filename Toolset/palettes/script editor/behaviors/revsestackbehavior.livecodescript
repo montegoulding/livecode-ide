@@ -126,6 +126,8 @@ command revSEAddTargetObject pObject
       put the script of tObject into tScript
       seUpdateChecksum tObject, tScript
    end try
+   
+   compileScript tObject, false
 end revSEAddTargetObject
 
 # Parameters
@@ -1502,7 +1504,7 @@ private command applyScript pObject, pIgnoreErrors, @rCompilationErrors
    # MW-2011-03-11: After moving S/E scripts into behaviors, we have a problem - it makes it too easy
    #   to break everything. Thus in the case the script is in an object which has 'revNewScriptEditor' in its
    #   long id we don't set the script on compilation errors.
-   if tCompilationResult is empty or not revIDEObjectIsOnIDEStack(pObject) or pIgnoreErrors then
+   if tCompilationResult is empty or pIgnoreErrors then
       local tScript
       send "scriptGet pObject" to group "Editor" of me
       put the result into tScript
@@ -1763,7 +1765,7 @@ command actionApplyAndSave
          local tCompilationErrors
          put the result into tCompilationErrors
          
-         if not tIgnoreErrors and tCompilationErrors is not empty and revIDEObjectIsOnIDEStack(tTargetObject) then
+         if not tIgnoreErrors and tCompilationErrors is not empty then
             answer error "The following script has compilation errors. Would you like to ignore errors and apply the script before saving?" & return & the long name of tTargetObject with "Ignore Errors" or "Cancel"
             
             if it is "Cancel" then
