@@ -27,6 +27,8 @@ on startup
       put the long id of the target into tTarget
    end if
    
+   logInit
+   
    if tTarget is the long id of me then 
 	   if the environment begins with "development" then
     	  send "TestRunnerInvokeAll" to me in 0
@@ -84,8 +86,7 @@ end getCommandLineInfo
 command TestRunnerMain
    local tInfo
    put getCommandLineInfo() into tInfo
-   logInit
-
+   
    switch tInfo["args"][1]
       case "run"
          doRun tInfo
