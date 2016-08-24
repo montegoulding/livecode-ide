@@ -18,6 +18,7 @@ along with LiveCode.  If not see <http://www.gnu.org/licenses/>.  */
 
 -- FIXME provide this on the command line
 constant kLogFilename = "_test_suite.log"
+local sTesting = "false"
 
 on startup
    local tTarget
@@ -36,10 +37,12 @@ on startup
 		  send "TestRunnerMain" to me in 0
 	   end if
    end if
+   
+   put true into sTesting
 end startup
 
 on openStack
-   if the long id of the target is the long id of this card of me then
+   if not sTesting then the long id of the target is the long id of this card of me then
 	   send "TestRunnerInvokeAll" to me in 0
    end if
 end openStack
